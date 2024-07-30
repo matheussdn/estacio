@@ -37,7 +37,7 @@ def calculadora(num1, num2, operacao):
 while saida.lower() != 'n':
     num1 = float(input("Digite o primeiro número: "))
     num2 = float(input("Digite o segundo número: "))
-    operacao = input("Digite a operação (+, -, *, / ou adicao, subtracao, multiplicacao, divisao): ")
+    operacao = input("Digite a operação (Símbolos (+, -, *, /) ou digite adicao, subtracao, multiplicacao, divisao): ")
     resultado = calculadora(num1, num2, operacao)
     print(f"Resultado da operação: {resultado}")
     saida = input("Deseja continuar? (S/N): ")
