@@ -16,6 +16,7 @@ def selection_sort(arr):
                 min_idx = j
         arr[i], arr[min_idx] = arr[min_idx], arr[i]
 
+
 def ordenar_e_comparar_metodos(caminho_arquivo):
 
     lista_palavras = []
@@ -28,32 +29,41 @@ def ordenar_e_comparar_metodos(caminho_arquivo):
     tempo_inicial = time.time()
     bubble_sort(lista_bolha)
     tempo_bubble = time.time() - tempo_inicial
-    print(f"Bubble Sort: {tempo_bubble:.6f} segundos")
+    print("Resultado Bubble Sort:")
+    print(lista_bolha)  
+    print(f"Bubble Sort: {tempo_bubble:.6f} segundos\n")
 
     lista_selecao = lista_palavras[:]
     tempo_inicial = time.time()
     selection_sort(lista_selecao)
     tempo_selection = time.time() - tempo_inicial
-    print(f"Selection Sort: {tempo_selection:.6f} segundos")
+    print("Resultado Selection Sort:")
+    print(lista_selecao)  
+    print(f"Selection Sort: {tempo_selection:.6f} segundos\n")
 
     lista_sort = lista_palavras[:]
     tempo_inicial = time.time()
     lista_sort.sort()
     tempo_sort = time.time() - tempo_inicial
-    print(f"Sort nativo: {tempo_sort:.6f} segundos")
+    print("Resultado Sort nativo:")
+    print(lista_sort)  
+    print(f"Sort nativo: {tempo_sort:.6f} segundos\n")
 
+ 
     tempos = {
         'bubble_sort': tempo_bubble,
         'selection_sort': tempo_selection,
         'sort_nativo': tempo_sort
     }
-    
+
     melhor_metodo = min(tempos, key=tempos.get)
     print(f"Melhor método: {melhor_metodo}")
+
 
     lista_ordenada = lista_bolha if melhor_metodo == 'bubble_sort' else lista_selecao if melhor_metodo == 'selection_sort' else lista_sort
 
     with open('palavras_ordenadas.txt', 'w') as arquivo_saida:
         arquivo_saida.write('\n'.join(lista_ordenada))
+
 
 ordenar_e_comparar_metodos('ordem.txt')
