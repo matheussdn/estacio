@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="formatos.css">
+  <title>Document</title>
+</head>
+<body>
+  <header class="navbar navbar-expand bg-dark navbar-dark">
+    <div class="container-fluid"> 
+        <ul class="navbar-nav me-auto d-flex flex-row"> 
+            <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="receitas.html">Receitas</a></li>
+            <li class="nav-item"><a class="nav-link active" href="cadastro.html">Cadastro</a></li>
+        </ul>
+    </div>
+</header>
+  
+<main class="container-fluid py-4">
+  <div class="container form-container p-5 rounded">
+      <h1 class="text-center mb-4">Efetue seu Cadastro</h1>
+      <form method="POST" action="mailto:vovomaria@gimil.com" enctype="text/plain"><!--esse email não existe-->
+          <div class="row mb-3">
+              <div class="col-md-6">
+                  <label for="nome" class="form-label">Nome</label>
+                  <input type="text" id="nome" name="nome" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                  <label for="email" class="form-label">E-mail</label>
+                  <input type="email" id="email" name="email" class="form-control" required>
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-4">
+                  <label for="cep" class="form-label">CEP</label>
+                  <input type="text" id="cep" name="cep" class="form-control" pattern="\d{5}-\d{3}" placeholder="00000-000" maxlength="8" required>
+              </div>
+              <div class="col-md-8">
+                  <label for="rua" class="form-label">Rua</label>
+                  <input type="text" id="rua" name="rua" class="form-control" required>
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-4">
+                  <label for="numero" class="form-label">Nº</label>
+                  <input type="number" id="numero" name="numero" class="form-control" required>
+              </div>
+              <div class="col-md-8">
+                  <label for="complemento" class="form-label">Complemento</label>
+                  <input type="text" id="complemento" name="complemento" class="form-control" required>
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-8">
+                  <label for="cidade" class="form-label">Cidade</label>
+                  <input type="text" id="cidade" name="cidade" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                  <label for="uf" class="form-label">UF</label>
+                  <select id="uf" name="uf" class="form-select" required>
+                      <option value="" disabled selected>Selecione</option>
+                      <option value="AC">AC - Acre</option>
+                      <option value="AL">AL - Alagoas</option>
+                      <option value="AM">AM - Amazonas</option>
+                      <option value="AP">AP - Amapá</option>
+                      <option value="BA">BA - Bahia</option>
+                      <option value="CE">CE - Ceará</option>
+                      <option value="DF">DF - Distrito Federal</option>
+                      <option value="ES">ES - Espírito Santo</option>
+                      <option value="GO">GO - Goiás</option>
+                      <option value="MA">MA - Maranhão</option>
+                      <option value="MG">MG - Minas Gerais</option>
+                      <option value="MS">MS - Mato Grosso do Sul</option>
+                      <option value="MT">MT - Mato Grosso</option>
+                      <option value="PA">PA - Pará</option>
+                      <option value="PB">PB - Paraíba</option>
+                      <option value="PE">PE - Pernambuco</option>
+                      <option value="PI">PI - Piauí</option>
+                      <option value="PR">PR - Paraná</option>
+                      <option value="RJ">RJ - Rio de Janeiro</option>
+                      <option value="RN">RN - Rio Grande do Norte</option>
+                      <option value="RO">RO - Rondônia</option>
+                      <option value="RR">RR - Roraima</option>
+                      <option value="RS">RS - Rio Grande do Sul</option>
+                      <option value="SC">SC - Santa Catarina</option>
+                      <option value="SE">SE - Sergipe</option>
+                      <option value="SP">SP - São Paulo</option>
+                      <option value="TO">TO - Tocantins</option>
+                  </select>
+              </div>
+          </div>
+          <div class="text-center">
+              <button type="submit" class="btn btn-dark">Cadastrar</button>
+          </div>
+      </form>
+  </div>
+</main>
+
+
+  <footer>&copy;Vó Maria 2024</footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+.receita{
+  flex-direction: row;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 30px; 
+  gap: 50px;
+  overflow-y: auto;
+}
+
+.receita p{
+  object-fit: cover;
+  
+}
+
+.receita img{
+  width: auto;
+  height: auto;
+  object-fit: cover;
+
+}
