@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Livro } from './livro';
+import { Livro } from "livro";
 
-const baseURL = "http://localhost:3030/livros"; // URL do servidor Express
+
+const baseURL = "http://localhost:3030/livros";
+
 
 interface LivroMongo {
   _id: string | null;
@@ -11,59 +12,64 @@ interface LivroMongo {
   autores: string[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ControleLivrosService {
-  
+export class ControleLivros {
+
+
   async obterLivros(): Promise<Livro[]> {
     try {
-      const resposta = await fetch(baseURL, { method: "GET" });
-      if (!resposta.ok) throw new Error("Erro ao obter os livros");
-      
-      const dados: LivroMongo[] = await resposta.json();
-      return dados.map(livro => new Livro(
-        livro._id ?? "",
+      const response = await fetch(baseURL);
+      const livrosMongo: LivroMongo[] = await response.json();
+
+      return livrosMongo.map(livro => new Livro(
+        livro._id || "", 
         livro.codEditora,
         livro.titulo,
         livro.resumo,
         livro.autores
       ));
-    } catch (erro) {
-      console.error(erro);
+    } catch (error) {
+      console.error('Erro ao obter livros:', error);
       return [];
     }
   }
 
+ 
   async excluir(codigo: string): Promise<boolean> {
     try {
-      const resposta = await fetch(`${baseURL}/${codigo}`, { method: "DELETE" });
-      return resposta.ok;
-    } catch (erro) {
-      console.error("Erro ao excluir livro:", erro);
+      const response = await fetch(`${baseURL}/${codigo}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+      return result.ok; 
+    } catch (error) {
+      console.error('Erro ao excluir livro:', error);
       return false;
     }
   }
 
+
   async incluir(livro: Livro): Promise<boolean> {
     try {
       const livroMongo: LivroMongo = {
-        _id: null, 
+        _id: null,
         codEditora: livro.codEditora,
         titulo: livro.titulo,
         resumo: livro.resumo,
-        autores: livro.autores
+        autores: livro.autores,
       };
 
-      const resposta = await fetch(baseURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(livroMongo)
+      const response = await fetch(baseURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(livroMongo),
       });
 
-      return resposta.ok;
-    } catch (erro) {
-      console.error("Erro ao incluir livro:", erro);
+      const result = await response.json();
+      return result.ok; 
+    } catch (error) {
+      console.error('Erro ao incluir livro:', error);
       return false;
     }
   }

@@ -6,6 +6,7 @@ const LivroDados = ({ onAddBook }) => {
   const [resumo, setResumo] = useState("");
   const [autores, setAutores] = useState("");
   const [codEditora, setCodEditora] = useState(0);
+
   const navigate = useNavigate();
 
   const editoras = [
@@ -35,9 +36,14 @@ const LivroDados = ({ onAddBook }) => {
       codEditora
     };
 
-    onAddBook(novoLivro).then(() => {
-      navigate("/"); 
-    });
+   
+    onAddBook(novoLivro)
+      .then(() => {
+        navigate("/"); 
+      })
+      .catch((erro) => {
+        console.error("Erro ao incluir livro:", erro);
+      });
   };
 
   return (

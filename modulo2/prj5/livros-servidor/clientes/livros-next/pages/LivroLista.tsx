@@ -1,26 +1,40 @@
 import { useState, useEffect } from 'react';
 import { Livro } from '../classes/modelo/Livro'; 
 import { LinhaLivro } from '../componentes/LinhaLivro'; 
-import { ControleLivros } from '../classes/controle/ControleLivros';
 import styles from '../styles/Home.module.css';
 import { Menu } from '../componentes/Menu';
 import Head from 'next/head';
-
-const controleLivros = new ControleLivros();
+import { ControleLivros } from '../classes/controle/ControleLivros'; 
 
 const LivroLista: React.FC = () => {
   const [livros, setLivros] = useState<Array<Livro>>([]);
   const [carregado, setCarregado] = useState<boolean>(false);
 
+
+  const controleLivros = new ControleLivros();
+
+
   useEffect(() => {
-    controleLivros.obterLivros().then((dados) => {
-      setLivros(dados);
+    controleLivros.obterLivros().then((livrosObtidos) => {
+      setLivros(livrosObtidos);
+      setCarregado(true);
+    }).catch((error) => {
+      console.error("Erro ao obter livros:", error);
     });
   }, []);
 
+ 
   const excluir = (codigo: string) => {
     controleLivros.excluir(codigo).then(() => {
-      setCarregado(false);
+      setCarregado(false); 
+      controleLivros.obterLivros().then((livrosObtidos) => {
+        setLivros(livrosObtidos);
+        setCarregado(true); 
+      }).catch((error) => {
+        console.error("Erro ao obter livros após exclusão:", error);
+      });
+    }).catch((error) => {
+      console.error("Erro ao excluir livro:", error);
     });
   };
 
@@ -44,7 +58,7 @@ const LivroLista: React.FC = () => {
           <tbody>
             {livros.map((livro, index) => (
               <LinhaLivro
-                key={index} 
+                key={index}  
                 livro={livro}
                 excluir={() => excluir(livro.codigo)}
               />

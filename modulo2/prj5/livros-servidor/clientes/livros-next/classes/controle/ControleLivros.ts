@@ -1,63 +1,49 @@
-const baseURL = "/api/livros"; // Ajuste para API interna do Next.js
-
-interface LivroMongo {
-  _id: string | null;
-  codEditora: number;
-  titulo: string;
-  resumo: string;
-  autores: string[];
-}
+import { Livro } from "../modelo/Livro";
 
 export class ControleLivros {
+
   async obterLivros(): Promise<Livro[]> {
-    try {
-      const resposta = await fetch(baseURL, { method: "GET" });
-      if (!resposta.ok) throw new Error("Erro ao obter os livros");
-      
-      const dados: LivroMongo[] = await resposta.json();
-      return dados.map(livro => new Livro(
-        livro._id ?? "",
-        livro.codEditora,
-        livro.titulo,
-        livro.resumo,
-        livro.autores
-      ));
-    } catch (erro) {
-      console.error(erro);
-      return [];
+    const response = await fetch("http://localhost:5000/api/livros"); 
+    if (!response.ok) {
+      throw new Error("Erro ao obter os livros");
     }
+    const livrosData = await response.json();
+    return livrosData.map((livroData: any) => new Livro(
+      livroData.codigo,
+      livroData.codEditora,
+      livroData.titulo,
+      livroData.resumo,
+      livroData.autores
+    ));
   }
 
-  async excluir(_id: string): Promise<boolean> {
-    try {
-      const resposta = await fetch(`${baseURL}/${_id}`, { method: "DELETE" });
-      return resposta.ok;
-    } catch (erro) {
-      console.error("Erro ao excluir livro:", erro);
-      return false;
-    }
-  }
-
-  async incluir(livro: Livro): Promise<boolean> {
-    try {
-      const livroMongo: LivroMongo = {
-        _id: null,
+  async incluir(livro: Livro): Promise<void> {
+    const response = await fetch("http://localhost:5000/api/livros", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        codigo: "", 
         codEditora: livro.codEditora,
         titulo: livro.titulo,
         resumo: livro.resumo,
-        autores: livro.autores
-      };
+        autores: livro.autores,
+      }),
+    });
 
-      const resposta = await fetch(baseURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(livroMongo)
-      });
+    if (!response.ok) {
+      throw new Error("Erro ao incluir o livro");
+    }
+  }
 
-      return resposta.ok;
-    } catch (erro) {
-      console.error("Erro ao incluir livro:", erro);
-      return false;
+  async excluir(codigo: string): Promise<void> {
+    const response = await fetch(`http://localhost:5000/api/livros/${codigo}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao excluir o livro");
     }
   }
 }

@@ -1,5 +1,5 @@
 export class Livro {
-  codigo: string;
+  codigo: string;  
   codEditora: number;
   titulo: string;
   resumo: string;

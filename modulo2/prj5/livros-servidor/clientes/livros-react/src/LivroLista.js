@@ -1,30 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { ControleLivros } from "../controle/ControleLivros";
+import { ControleLivros } from "../controle/ControleLivros"; 
 
 const LivroLista: React.FC<{ getNomeEditora: (codEditora: number) => string }> = ({ getNomeEditora }) => {
-  const controleLivros = new ControleLivros();
   const [livros, setLivros] = useState<any[]>([]);
-  const [carregado, setCarregado] = useState(false);
-
+  const [carregado, setCarregado] = useState<boolean>(false);
   
   useEffect(() => {
-    setCarregado(false);
+    setCarregado(true);
+    const controleLivros = new ControleLivros();
     controleLivros.obterLivros()
-      .then((dados) => {
-        setLivros(dados);
-        setCarregado(true);
+      .then((livrosObtidos) => {
+        setLivros(livrosObtidos);
+        setCarregado(false);
       })
-      .catch((erro) => console.error("Erro ao carregar livros:", erro));
+      .catch((erro) => {
+        console.error("Erro ao obter livros:", erro);
+        setCarregado(false); 
+      });
   }, []);
 
- 
-  const excluir = async (codigo: string) => {
-    await controleLivros.excluir(codigo).then((sucesso) => {
-      if (sucesso) {
-        setLivros((prevLivros) => prevLivros.filter((livro) => livro._id !== codigo));
-      }
-      setCarregado(false); // Agora só chama após a exclusão
-    });
+  const onExcluir = (codigo: string) => {
+    setCarregado(true);
+    const controleLivros = new ControleLivros();
+    controleLivros.excluir(codigo)
+      .then((sucesso) => {
+        if (sucesso) {
+          setLivros(livros.filter(livro => livro.codigo !== codigo)); 
+        }
+        setCarregado(false); 
+      })
+      .catch((erro) => {
+        console.error("Erro ao excluir livro:", erro);
+        setCarregado(false); 
+      });
   };
 
   return (
@@ -42,13 +50,16 @@ const LivroLista: React.FC<{ getNomeEditora: (codEditora: number) => string }> =
         </thead>
         <tbody>
           {livros.map((livro, index) => (
-            <tr key={index}> {/* Usando index como key */}
+            <tr key={index}> {}
               <td>{livro.titulo}</td>
               <td>{livro.resumo}</td>
               <td>{getNomeEditora(livro.codEditora)}</td>
               <td>{livro.autores.join(", ")}</td>
               <td>
-                <button className="btn btn-danger" onClick={() => excluir(livro._id)}>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => onExcluir(livro.codigo)} 
+                >
                   Excluir
                 </button>
               </td>

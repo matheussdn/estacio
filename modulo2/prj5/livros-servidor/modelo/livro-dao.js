@@ -1,20 +1,37 @@
 const Livro = require('./livro-schema'); 
 
-const LivroDAO = require('../modelo/livro-dao.js');
-
 
 const obterLivros = async () => {
-    return await Livro.find(); 
+    try {
+     
+        return await Livro.find();
+    } catch (err) {
+        console.error('Erro ao obter livros:', err);
+        throw err;
+    }
 };
 
 
 const incluir = async (livro) => {
-    return await Livro.create(livro);
+    try {
+    
+        const novoLivro = new Livro(livro);
+        return await novoLivro.save();
+    } catch (err) {
+        console.error('Erro ao incluir livro:', err);
+        throw err;
+    }
 };
 
 
 const excluir = async (codigo) => {
-    return await Livro.deleteOne({ _id: codigo }); 
+    try {
+
+        return await Livro.deleteOne({ _id: codigo });
+    } catch (err) {
+        console.error('Erro ao excluir livro:', err);
+        throw err;
+    }
 };
 
 

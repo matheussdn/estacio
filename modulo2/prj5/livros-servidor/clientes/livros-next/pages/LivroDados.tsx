@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { ControleEditora } from '../classes/controle/ControleEditora'; 
+import { ControleLivros } from '../classes/controle/ControleLivros'; 
 import styles from '../styles/Home.module.css';
 import { Menu } from '../componentes/Menu';
 import Head from 'next/head';
 
 const LivroDados: React.FC = () => {
-  const baseURL = "http://localhost:3000/api/livros";
   const [opcoes, setOpcoes] = useState<{ value: number; text: string }[]>([]);
   const [titulo, setTitulo] = useState<string>('');
   const [resumo, setResumo] = useState<string>('');
@@ -14,13 +13,11 @@ const LivroDados: React.FC = () => {
   const [codEditora, setCodEditora] = useState<number>(0);
   const router = useRouter();
 
-
-  const controleEditora = new ControleEditora();
-
+  const controleLivros = new ControleLivros(); 
 
   const obterEditoras = async () => {
     try {
-      const editoras = await controleEditora.getEditoras();
+      const editoras = await controleLivros.getEditoras(); 
       const editorasOptions = editoras.map((editora) => ({
         value: editora.codEditora,
         text: editora.nome,
@@ -35,39 +32,30 @@ const LivroDados: React.FC = () => {
     obterEditoras();
   }, []);
 
-
   const tratarCombo = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCodEditora(Number(event.target.value));
   };
 
-
-  const incluir = async (event: React.FormEvent<HTMLFormElement>) => {
+  const incluir = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const livro = {
-      codigo: 0,
+      codigo: '', 
       titulo,
       resumo,
       autores: autores.split('\n'),
       codEditora,
     };
 
-    try {
-      const res = await fetch(baseURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(livro),
+    controleLivros.incluir(livro) 
+      .then((data) => {
+        if (data.ok) {
+          router.push('/LivroLista'); 
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao incluir livro:", error);
       });
-
-      const data = await res.json();
-      if (data.ok) {
-        router.push('/LivroLista');
-      }
-    } catch (error) {
-      console.error("Erro ao incluir livro:", error);
-    }
   };
 
   return (
