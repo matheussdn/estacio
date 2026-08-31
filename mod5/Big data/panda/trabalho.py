@@ -1,7 +1,7 @@
 import pandas as pd
 
 df = pd.read_csv(
-    "dados.csv",
+    "Dados.csv",
     sep=";",
     engine="python"
 )
